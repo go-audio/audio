@@ -1,5 +1,7 @@
 # audio
 
+[![GoDoc](http://godoc.org/github.com/go-audio/audio?status.svg)](http://godoc.org/github.com/go-audio/audio)
+
 `audio` is a generic Go package designed to define a common
 interface to analyze and/or process audio data.
 
