@@ -129,7 +129,7 @@ func (buf *IntBuffer) AsFloatBuffer() *FloatBuffer {
 func (buf *IntBuffer) AsIntBuffer() *IntBuffer { return buf }
 
 // NumFrames returns the number of frames contained in the buffer.
-func (buf *IntBuffer) NumFrame() int {
+func (buf *IntBuffer) NumFrames() int {
 	if buf == nil || buf.Format == nil {
 		return 0
 	}
@@ -139,4 +139,22 @@ func (buf *IntBuffer) NumFrame() int {
 	}
 
 	return len(buf.Data) / numChannels
+}
+
+// Clone creates a clean clone that can be modified without
+// changing the source buffer.
+func (buf *IntBuffer) Clone() Buffer {
+	if buf == nil {
+		return nil
+	}
+	newB := &IntBuffer{}
+	newB.Data = make([]int, len(buf.Data))
+	copy(newB.Data, buf.Data)
+	newB.Format = &Format{
+		NumChannels: buf.Format.NumChannels,
+		SampleRate:  buf.Format.SampleRate,
+		BitDepth:    buf.Format.BitDepth,
+		Endianness:  buf.Format.Endianness,
+	}
+	return newB
 }
