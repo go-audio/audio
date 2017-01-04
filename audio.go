@@ -1,9 +1,6 @@
 package audio
 
-import (
-	"encoding/binary"
-	"errors"
-)
+import "errors"
 
 var (
 	// ErrInvalidBuffer is a generic error returned when trying to read/write to an invalid buffer.
@@ -16,10 +13,6 @@ type Format struct {
 	NumChannels int
 	// SampleRate is the sampling rate in Hz
 	SampleRate int
-	// BitDepth is the number of bits of data for each sample
-	BitDepth int
-	// Endianess indicate how the byte order of underlying bytes
-	Endianness binary.ByteOrder
 }
 
 // Buffer is the representation of an audio buffer.
@@ -63,8 +56,6 @@ func (buf *FloatBuffer) AsFloat32Buffer() *Float32Buffer {
 	newB.Format = &Format{
 		NumChannels: buf.Format.NumChannels,
 		SampleRate:  buf.Format.SampleRate,
-		BitDepth:    buf.Format.BitDepth,
-		Endianness:  buf.Format.Endianness,
 	}
 	return newB
 }
@@ -79,8 +70,6 @@ func (buf *FloatBuffer) AsIntBuffer() *IntBuffer {
 	newB.Format = &Format{
 		NumChannels: buf.Format.NumChannels,
 		SampleRate:  buf.Format.SampleRate,
-		BitDepth:    buf.Format.BitDepth,
-		Endianness:  buf.Format.Endianness,
 	}
 	return newB
 }
@@ -97,8 +86,6 @@ func (buf *FloatBuffer) Clone() Buffer {
 	newB.Format = &Format{
 		NumChannels: buf.Format.NumChannels,
 		SampleRate:  buf.Format.SampleRate,
-		BitDepth:    buf.Format.BitDepth,
-		Endianness:  buf.Format.Endianness,
 	}
 	return newB
 }
@@ -137,8 +124,6 @@ func (buf *Float32Buffer) AsFloatBuffer() *FloatBuffer {
 	newB.Format = &Format{
 		NumChannels: buf.Format.NumChannels,
 		SampleRate:  buf.Format.SampleRate,
-		BitDepth:    buf.Format.BitDepth,
-		Endianness:  buf.Format.Endianness,
 	}
 	return newB
 }
@@ -156,8 +141,6 @@ func (buf *Float32Buffer) AsIntBuffer() *IntBuffer {
 	newB.Format = &Format{
 		NumChannels: buf.Format.NumChannels,
 		SampleRate:  buf.Format.SampleRate,
-		BitDepth:    buf.Format.BitDepth,
-		Endianness:  buf.Format.Endianness,
 	}
 	return newB
 }
@@ -174,8 +157,6 @@ func (buf *Float32Buffer) Clone() Buffer {
 	newB.Format = &Format{
 		NumChannels: buf.Format.NumChannels,
 		SampleRate:  buf.Format.SampleRate,
-		BitDepth:    buf.Format.BitDepth,
-		Endianness:  buf.Format.Endianness,
 	}
 	return newB
 }
@@ -214,8 +195,6 @@ func (buf *IntBuffer) AsFloatBuffer() *FloatBuffer {
 	newB.Format = &Format{
 		NumChannels: buf.Format.NumChannels,
 		SampleRate:  buf.Format.SampleRate,
-		BitDepth:    buf.Format.BitDepth,
-		Endianness:  buf.Format.Endianness,
 	}
 	return newB
 }
@@ -230,8 +209,6 @@ func (buf *IntBuffer) AsFloat32Buffer() *Float32Buffer {
 	newB.Format = &Format{
 		NumChannels: buf.Format.NumChannels,
 		SampleRate:  buf.Format.SampleRate,
-		BitDepth:    buf.Format.BitDepth,
-		Endianness:  buf.Format.Endianness,
 	}
 	return newB
 }
@@ -264,8 +241,6 @@ func (buf *IntBuffer) Clone() Buffer {
 	newB.Format = &Format{
 		NumChannels: buf.Format.NumChannels,
 		SampleRate:  buf.Format.SampleRate,
-		BitDepth:    buf.Format.BitDepth,
-		Endianness:  buf.Format.Endianness,
 	}
 	return newB
 }

@@ -1,187 +1,49 @@
 package audio
 
-import "encoding/binary"
-
 var (
-	// AIFF
 	// MONO
 
-	// FormatMono225008bBE mono 8bit 22.5kHz AIFF like format.
-	FormatMono225008bBE = &Format{
+	// FormatMono22500 mono 22.5kHz format.
+	FormatMono22500 = &Format{
 		NumChannels: 1,
 		SampleRate:  22500,
-		BitDepth:    8,
-		Endianness:  binary.BigEndian,
 	}
-	// FormatMono2250016bBE mono 16bit 22.5kHz AIFF like format.
-	FormatMono2250016bBE = &Format{
-		NumChannels: 1,
-		SampleRate:  22500,
-		BitDepth:    16,
-		Endianness:  binary.BigEndian,
-	}
-	// FormatMono441008bBE mono 8bit 44.1kHz AIFF like format.
-	FormatMono441008bBE = &Format{
+	// FormatMono44100 mono 8bit 44.1kHz format.
+	FormatMono44100 = &Format{
 		NumChannels: 1,
 		SampleRate:  44100,
-		BitDepth:    8,
-		Endianness:  binary.BigEndian,
 	}
-	// FormatMono4410016bBE mono 16bit 44.1kHz AIFF like format.
-	FormatMono4410016bBE = &Format{
+	// FormatMono48000 mono 48kHz format.
+	FormatMono48000 = &Format{
 		NumChannels: 1,
-		SampleRate:  44100,
-		BitDepth:    16,
-		Endianness:  binary.BigEndian,
+		SampleRate:  48000,
 	}
-	// FormatMono4410024bBE mono 24bit 44.1kHz AIFF like format.
-	FormatMono4410024bBE = &Format{
+	// FormatMono96000 mono 96kHz format.
+	FormatMono96000 = &Format{
 		NumChannels: 1,
-		SampleRate:  44100,
-		BitDepth:    24,
-		Endianness:  binary.BigEndian,
-	}
-	// FormatMono4410032bBE mono 32bit 44.1kHz AIFF like format.
-	FormatMono4410032bBE = &Format{
-		NumChannels: 1,
-		SampleRate:  44100,
-		BitDepth:    32,
-		Endianness:  binary.BigEndian,
+		SampleRate:  96000,
 	}
 
 	// STEREO
 
-	// FormatStereo225008bBE Stereo 8bit 22.5kHz AIFF like format.
-	FormatStereo225008bBE = &Format{
-		NumChannels: 2,
-		SampleRate:  22500,
-		BitDepth:    8,
-		Endianness:  binary.BigEndian,
-	}
-	// FormatStereo2250016bBE Stereo 16bit 22.5kHz AIFF like format.
-	FormatStereo2250016bBE = &Format{
-		NumChannels: 2,
-		SampleRate:  22500,
-		BitDepth:    16,
-		Endianness:  binary.BigEndian,
-	}
-	// FormatStereo441008bBE Stereo 8bit 44.1kHz AIFF like format.
-	FormatStereo441008bBE = &Format{
-		NumChannels: 2,
-		SampleRate:  44100,
-		BitDepth:    8,
-		Endianness:  binary.BigEndian,
-	}
-	// FormatStereo4410016bBE Stereo 16bit 44.1kHz AIFF like format.
-	FormatStereo4410016bBE = &Format{
-		NumChannels: 2,
-		SampleRate:  44100,
-		BitDepth:    16,
-		Endianness:  binary.BigEndian,
-	}
-	// FormatStereo4410024bBE Stereo 24bit 44.1kHz AIFF like format.
-	FormatStereo4410024bBE = &Format{
-		NumChannels: 2,
-		SampleRate:  44100,
-		BitDepth:    24,
-		Endianness:  binary.BigEndian,
-	}
-	// FormatStereo4410032bBE Stereo 32bit 44.1kHz AIFF like format.
-	FormatStereo4410032bBE = &Format{
-		NumChannels: 2,
-		SampleRate:  44100,
-		BitDepth:    32,
-		Endianness:  binary.BigEndian,
-	}
-
-	// WAV
-	// MONO
-
-	// FormatMono225008bLE mono 8bit 22.5kHz WAV like format.
-	FormatMono225008bLE = &Format{
+	// FormatStereo22500 Stereo 22.5kHz format.
+	FormatStereo22500 = &Format{
 		NumChannels: 1,
 		SampleRate:  22500,
-		BitDepth:    8,
-		Endianness:  binary.LittleEndian,
 	}
-	// FormatMono2250016bLE mono 16bit 22.5kHz WAV like format.
-	FormatMono2250016bLE = &Format{
-		NumChannels: 1,
-		SampleRate:  22500,
-		BitDepth:    16,
-		Endianness:  binary.LittleEndian,
-	}
-	// FormatMono441008bLE mono 8bit 44.1kHz WAV like format.
-	FormatMono441008bLE = &Format{
+	// FormatStereo44100 Stereo 8bit 44.1kHz format.
+	FormatStereo44100 = &Format{
 		NumChannels: 1,
 		SampleRate:  44100,
-		BitDepth:    8,
-		Endianness:  binary.LittleEndian,
 	}
-	// FormatMono4410016bLE mono 16bit 44.1kHz WAV like format.
-	FormatMono4410016bLE = &Format{
+	// FormatStereo48000 Stereo 48kHz format.
+	FormatStereo48000 = &Format{
 		NumChannels: 1,
-		SampleRate:  44100,
-		BitDepth:    16,
-		Endianness:  binary.LittleEndian,
+		SampleRate:  48000,
 	}
-	// FormatMono4410024bLE mono 24bit 44.1kHz WAV like format.
-	FormatMono4410024bLE = &Format{
+	// FormatStereo96000 Stereo 96kHz format.
+	FormatStereo96000 = &Format{
 		NumChannels: 1,
-		SampleRate:  44100,
-		BitDepth:    24,
-		Endianness:  binary.LittleEndian,
-	}
-	// FormatMono4410032bLE mono 32bit 44.1kHz WAV like format.
-	FormatMono4410032bLE = &Format{
-		NumChannels: 1,
-		SampleRate:  44100,
-		BitDepth:    32,
-		Endianness:  binary.LittleEndian,
-	}
-
-	// STEREO
-
-	// FormatStereo225008bLE Stereo 8bit 22.5kHz WAV like format.
-	FormatStereo225008bLE = &Format{
-		NumChannels: 2,
-		SampleRate:  22500,
-		BitDepth:    8,
-		Endianness:  binary.LittleEndian,
-	}
-	// FormatStereo2250016bLE Stereo 16bit 22.5kHz WAV like format.
-	FormatStereo2250016bLE = &Format{
-		NumChannels: 2,
-		SampleRate:  22500,
-		BitDepth:    16,
-		Endianness:  binary.LittleEndian,
-	}
-	// FormatStereo441008bLE Stereo 8bit 44.1kHz WAV like format.
-	FormatStereo441008bLE = &Format{
-		NumChannels: 2,
-		SampleRate:  44100,
-		BitDepth:    8,
-		Endianness:  binary.LittleEndian,
-	}
-	// FormatStereo4410016bLE Stereo 16bit 44.1kHz WAV like format.
-	FormatStereo4410016bLE = &Format{
-		NumChannels: 2,
-		SampleRate:  44100,
-		BitDepth:    16,
-		Endianness:  binary.LittleEndian,
-	}
-	// FormatStereo4410024bLE Stereo 24bit 44.1kHz WAV like format.
-	FormatStereo4410024bLE = &Format{
-		NumChannels: 2,
-		SampleRate:  44100,
-		BitDepth:    24,
-		Endianness:  binary.LittleEndian,
-	}
-	// FormatStereo4410032bLE Stereo 32bit 44.1kHz WAV like format.
-	FormatStereo4410032bLE = &Format{
-		NumChannels: 2,
-		SampleRate:  44100,
-		BitDepth:    32,
-		Endianness:  binary.LittleEndian,
+		SampleRate:  96000,
 	}
 )
