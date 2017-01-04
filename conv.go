@@ -19,8 +19,8 @@ func IntMaxSignedValue(b int) int {
 	}
 }
 
-// IeeeFloatToInt converts a 10 byte IEEE float into an int.
-func IeeeFloatToInt(b [10]byte) int {
+// IEEEFloatToInt converts a 10 byte IEEE float into an int.
+func IEEEFloatToInt(b [10]byte) int {
 	var i uint32
 	// Negative number
 	if (b[0] & 0x80) == 1 {
@@ -48,8 +48,8 @@ func IeeeFloatToInt(b [10]byte) int {
 	return int(i)
 }
 
-// IntToIeeeFloat converts an int into a 10 byte IEEE float.
-func IntToIeeeFloat(i int) [10]byte {
+// IntToIEEEFloat converts an int into a 10 byte IEEE float.
+func IntToIEEEFloat(i int) [10]byte {
 	b := [10]byte{}
 	num := float64(i)
 
