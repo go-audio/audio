@@ -138,9 +138,9 @@ func Uint32toUint24Bytes(n uint32) []byte {
 // Int32toInt24LEBytes converts an int32 into a little endian 3 byte int24 representation
 func Int32toInt24LEBytes(n int32) []byte {
 	bytes := make([]byte, 3)
-	if (n & 0x800000) > 0 {
-		n |= ^0xffffff
-	}
+	// if (n & 0x800000) > 0 {
+	// 	n |= ^0xffffff
+	// }
 	bytes[2] = byte(n >> 24)
 	bytes[1] = byte(n >> 16)
 	bytes[0] = byte(n >> 8)
