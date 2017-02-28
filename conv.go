@@ -115,9 +115,25 @@ func Uint24to32(bytes []byte) uint32 {
 	return output
 }
 
-// Int24BETo32 converts an int24 value from 3 bytes to an int32
+// Int24BETo32 converts an int24 value from 3 bytes into an int32 value
 func Int24BETo32(bytes []byte) int32 {
+	if len(bytes) < 3 {
+		return 0
+	}
 	ss := int32(0xFF&bytes[0])<<16 | int32(0xFF&bytes[1])<<8 | int32(0xFF&bytes[2])
+	if (ss & 0x800000) > 0 {
+		ss |= ^0xffffff
+	}
+
+	return ss
+}
+
+// Int24LETo32 converts an int24 value from 3 bytes into an int32 value
+func Int24LETo32(bytes []byte) int32 {
+	if len(bytes) < 3 {
+		return 0
+	}
+	ss := int32(bytes[0]) | int32(bytes[1])<<8 | int32(bytes[2])<<16
 	if (ss & 0x800000) > 0 {
 		ss |= ^0xffffff
 	}
@@ -138,12 +154,12 @@ func Uint32toUint24Bytes(n uint32) []byte {
 // Int32toInt24LEBytes converts an int32 into a little endian 3 byte int24 representation
 func Int32toInt24LEBytes(n int32) []byte {
 	bytes := make([]byte, 3)
-	// if (n & 0x800000) > 0 {
-	// 	n |= ^0xffffff
-	// }
-	bytes[2] = byte(n >> 24)
-	bytes[1] = byte(n >> 16)
-	bytes[0] = byte(n >> 8)
+	if (n & 0x800000) > 0 {
+		n |= ^0xffffff
+	}
+	bytes[2] = byte(n >> 16)
+	bytes[1] = byte(n >> 8)
+	bytes[0] = byte(n >> 0)
 	return bytes
 }
 
