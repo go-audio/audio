@@ -1,6 +1,9 @@
 package audio
 
-import "errors"
+import (
+	"errors"
+	"math"
+)
 
 var (
 	// ErrInvalidBuffer is a generic error returned when trying to read/write to an invalid buffer.
@@ -204,7 +207,7 @@ func (buf *IntBuffer) AsFloat32Buffer() *Float32Buffer {
 	newB := &Float32Buffer{}
 	newB.Data = make([]float32, len(buf.Data))
 	for i := 0; i < len(buf.Data); i++ {
-		newB.Data[i] = float32(buf.Data[i])
+		newB.Data[i] = float32(float64(int16(buf.Data[i])) / math.Pow(2, 8*2-1))
 	}
 	newB.Format = &Format{
 		NumChannels: buf.Format.NumChannels,
