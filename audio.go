@@ -210,29 +210,32 @@ func (buf *IntBuffer) AsFloat32Buffer() *Float32Buffer {
 	newB := &Float32Buffer{}
 	newB.Data = make([]float32, len(buf.Data))
 	max := 0
-	// hack to handle different bit depths without having the information
 	bitDepth := buf.SourceBitDepth
+	// try to guess the bit depths without knowing the source
 	if bitDepth == 0 {
 		for _, s := range buf.Data {
 			if s > max {
 				max = s
 			}
 		}
-		bitDepth = 2
+		bitDepth = 8
+		if max > 127 {
+			bitDepth = 16
+		}
 		// greater than int16, expecting int24
 		if max > 32767 {
-			bitDepth = 3
+			bitDepth = 24
 		}
 		// int 32
 		if max > 8388607 {
-			bitDepth = 4
+			bitDepth = 32
 		}
 		// int 64
 		if max > 4294967295 {
-			bitDepth = 8
+			bitDepth = 64
 		}
 	}
-	factor := math.Pow(2, 8*float64(bitDepth)-1)
+	factor := math.Pow(2, 8*float64(bitDepth/8)-1)
 	for i := 0; i < len(buf.Data); i++ {
 		newB.Data[i] = float32(float64(int64(buf.Data[i])) / factor)
 	}
