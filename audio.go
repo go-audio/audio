@@ -206,8 +206,20 @@ func (buf *IntBuffer) AsFloatBuffer() *FloatBuffer {
 func (buf *IntBuffer) AsFloat32Buffer() *Float32Buffer {
 	newB := &Float32Buffer{}
 	newB.Data = make([]float32, len(buf.Data))
+	max := 0
+	// hack to handle different bit depths without having the information
+	bitDepth := 2.0
+	for _, s := range buf.Data {
+		if s > max {
+			max = s
+		}
+	}
+	// greater than int16, expecting int32
+	if max > 32767 {
+		bitDepth = 4.0
+	}
 	for i := 0; i < len(buf.Data); i++ {
-		newB.Data[i] = float32(float64(int16(buf.Data[i])) / math.Pow(2, 8*2-1))
+		newB.Data[i] = float32(float64(int16(buf.Data[i])) / math.Pow(bitDepth, 8*2-1))
 	}
 	newB.Format = &Format{
 		NumChannels: buf.Format.NumChannels,
