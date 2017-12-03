@@ -18,12 +18,9 @@ The idea is that audio libraries can define this interface or its
 implementations as input and return an `audio.Buffer` interface allowing all
 audio libraries to be chainable.
 
-This implementation was submitted as a [Go
-proposal](https://github.com/golang/go/issues/18497)
-
 ## Performance
 
-The buffer implementations are designed so a buffer can be reuse and mutated
+The buffer implementations are designed so a buffer can be reused and mutated
 avoiding allocation penalties.
 
 It is recommended to avoid using `Float32Buffer` unless performance is critical.
