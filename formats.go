@@ -28,22 +28,22 @@ var (
 
 	// FormatStereo22500 is stereo 22.5kHz format.
 	FormatStereo22500 = &Format{
-		NumChannels: 1,
+		NumChannels: 2,
 		SampleRate:  22500,
 	}
 	// FormatStereo44100 is stereo 8bit 44.1kHz format.
 	FormatStereo44100 = &Format{
-		NumChannels: 1,
+		NumChannels: 2,
 		SampleRate:  44100,
 	}
 	// FormatStereo48000 is stereo 48kHz format.
 	FormatStereo48000 = &Format{
-		NumChannels: 1,
+		NumChannels: 2,
 		SampleRate:  48000,
 	}
 	// FormatStereo96000 is stereo 96kHz format.
 	FormatStereo96000 = &Format{
-		NumChannels: 1,
+		NumChannels: 2,
 		SampleRate:  96000,
 	}
 )
