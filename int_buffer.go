@@ -2,6 +2,8 @@ package audio
 
 import "math"
 
+var _ Buffer = (*IntBuffer)(nil)
+
 // IntBuffer is an audio buffer with its PCM data formatted as int.
 type IntBuffer struct {
 	// Format is the representation of the underlying data format

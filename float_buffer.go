@@ -1,5 +1,8 @@
 package audio
 
+var _ Buffer = (*FloatBuffer)(nil)
+var _ Buffer = (*Float32Buffer)(nil)
+
 // FloatBuffer is an audio buffer with its PCM data formatted as float64.
 type FloatBuffer struct {
 	// Format is the representation of the underlying data format
