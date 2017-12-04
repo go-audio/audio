@@ -6,9 +6,9 @@ import "math"
 type PCMDataFormat uint8
 
 const (
-	// Unknown refers to an unknown format
+	// DataTypeUnknown refers to an unknown format
 	DataTypeUnknown PCMDataFormat = iota
-	// DataTypeUI8 indicates that the content of the audio buffer made of 8-bit integers.
+	// DataTypeI8 indicates that the content of the audio buffer made of 8-bit integers.
 	DataTypeI8
 	// DataTypeI16 indicates that the content of the audio buffer made of 16-bit integers.
 	DataTypeI16
@@ -92,8 +92,17 @@ func (b *PCMBuffer) NumFrames() int {
 	return b.Len() / numChannels
 }
 
+// AsFloatBuffer returns a copy of this buffer but with data converted to floats.
 func (b *PCMBuffer) AsFloatBuffer() *FloatBuffer {
-	panic("not implemented")
+	newB := &FloatBuffer{}
+	newB.Data = b.AsF64()
+	if b.Format != nil {
+		newB.Format = &Format{
+			NumChannels: b.Format.NumChannels,
+			SampleRate:  b.Format.SampleRate,
+		}
+	}
+	return newB
 }
 
 // AsFloat32Buffer implements the Buffer interface and returns a float 32 version of itself.
@@ -109,8 +118,17 @@ func (b *PCMBuffer) AsFloat32Buffer() *Float32Buffer {
 	return newB
 }
 
+// AsIntBuffer returns a copy of this buffer but with data truncated to Ints.
 func (b *PCMBuffer) AsIntBuffer() *IntBuffer {
-	panic("not implemented")
+	newB := &IntBuffer{}
+	newB.Data = b.AsInt()
+	if b.Format != nil {
+		newB.Format = &Format{
+			NumChannels: b.Format.NumChannels,
+			SampleRate:  b.Format.SampleRate,
+		}
+	}
+	return newB
 }
 
 // AsI8 returns the buffer's samples as int8 sample values.
@@ -211,6 +229,18 @@ func (b *PCMBuffer) AsI32() (out []int32) {
 		for i := 0; i < len(b.F64); i++ {
 			out[i] = int32(b.F64[i])
 		}
+	}
+	return out
+}
+
+// AsInt returns the buffer content as integers (int32s).
+// It's recommended to avoid this method since it creates
+// an extra copy of the buffer content.
+func (b *PCMBuffer) AsInt() (out []int) {
+	int32s := b.AsI32()
+	out = make([]int, len(int32s))
+	for i := 0; i < len(int32s); i++ {
+		out[i] = int(int32s[i])
 	}
 	return out
 }
