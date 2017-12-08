@@ -34,13 +34,13 @@ func (buf *IntBuffer) AsFloatBuffer() *FloatBuffer {
 func (buf *IntBuffer) AsFloat32Buffer() *Float32Buffer {
 	newB := &Float32Buffer{}
 	newB.Data = make([]float32, len(buf.Data))
-	max := 0
+	max := int64(0)
 	bitDepth := buf.SourceBitDepth
 	// try to guess the bit depths without knowing the source
 	if bitDepth == 0 {
 		for _, s := range buf.Data {
-			if s > max {
-				max = s
+			if int64(s) > max {
+				max = int64(s)
 			}
 		}
 		bitDepth = 8
