@@ -80,6 +80,9 @@ type Float32Buffer struct {
 	Format *Format
 	// Data is the buffer PCM data as floats
 	Data []float32
+	// SourceBitDepth helps us know if the source was encoded on
+	// 8, 16, 24, 32, 64 bits.
+	SourceBitDepth int
 }
 
 // PCMFormat returns the buffer format information.

@@ -11,7 +11,7 @@ type IntBuffer struct {
 	// Data is the buffer PCM data as ints
 	Data []int
 	// SourceBitDepth helps us know if the source was encoded on
-	// 1 (int8), 2 (int16), 3(int24), 4(int32), 8(int64) bytes.
+	// 8, 16, 24, 32, 64 bits.
 	SourceBitDepth int
 }
 
@@ -37,34 +37,34 @@ func (buf *IntBuffer) AsFloat32Buffer() *Float32Buffer {
 	newB := &Float32Buffer{}
 	newB.Data = make([]float32, len(buf.Data))
 	max := int64(0)
-	bitDepth := buf.SourceBitDepth
 	// try to guess the bit depths without knowing the source
-	if bitDepth == 0 {
+	if buf.SourceBitDepth == 0 {
 		for _, s := range buf.Data {
 			if int64(s) > max {
 				max = int64(s)
 			}
 		}
-		bitDepth = 8
+		buf.SourceBitDepth = 8
 		if max > 127 {
-			bitDepth = 16
+			buf.SourceBitDepth = 16
 		}
 		// greater than int16, expecting int24
 		if max > 32767 {
-			bitDepth = 24
+			buf.SourceBitDepth = 24
 		}
 		// int 32
 		if max > 8388607 {
-			bitDepth = 32
+			buf.SourceBitDepth = 32
 		}
 		// int 64
 		if max > 4294967295 {
-			bitDepth = 64
+			buf.SourceBitDepth = 64
 		}
 	}
-	factor := math.Pow(2, 8*float64(bitDepth/8)-1)
+	newB.SourceBitDepth = buf.SourceBitDepth
+	factor := math.Pow(2, float64(buf.SourceBitDepth)-1)
 	for i := 0; i < len(buf.Data); i++ {
-		newB.Data[i] = float32(float64(int64(buf.Data[i])) / factor)
+		newB.Data[i] = float32(float64(buf.Data[i]) / factor)
 	}
 	newB.Format = &Format{
 		NumChannels: buf.Format.NumChannels,
