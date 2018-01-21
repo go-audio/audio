@@ -114,6 +114,8 @@ func (buf *Float32Buffer) AsIntBuffer() *IntBuffer {
 		newB.SourceBitDepth = 16
 	}
 	newB.Data = make([]int, len(buf.Data))
+	// TODO: we might want to consider checking the min/max values
+	// and if we are in a normalized float range, apply a denormalization.
 	for i := 0; i < len(buf.Data); i++ {
 		newB.Data[i] = int(buf.Data[i])
 	}
