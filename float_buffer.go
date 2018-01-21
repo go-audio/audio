@@ -106,8 +106,13 @@ func (buf *Float32Buffer) AsFloatBuffer() *FloatBuffer {
 func (buf *Float32Buffer) AsFloat32Buffer() *Float32Buffer { return buf }
 
 // AsIntBuffer returns a copy of this buffer but with data truncated to Ints.
+// It is usually recommended to apply a transforms when going from a 24bit source
+// to an int (16bit destination). Look at transforms.PCMScaleF32() for instance
 func (buf *Float32Buffer) AsIntBuffer() *IntBuffer {
-	newB := &IntBuffer{}
+	newB := &IntBuffer{SourceBitDepth: buf.SourceBitDepth}
+	if newB.SourceBitDepth == 0 {
+		newB.SourceBitDepth = 16
+	}
 	newB.Data = make([]int, len(buf.Data))
 	for i := 0; i < len(buf.Data); i++ {
 		newB.Data[i] = int(buf.Data[i])
