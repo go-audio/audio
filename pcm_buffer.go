@@ -410,7 +410,7 @@ func (b *PCMBuffer) calculateIntBitDepth() uint8 {
 	if bitDepth != 0 {
 		return bitDepth
 	}
-	var max int
+	var max int64
 	switch b.DataType {
 	case DataTypeI8:
 		var i8max int8
@@ -419,7 +419,7 @@ func (b *PCMBuffer) calculateIntBitDepth() uint8 {
 				i8max = s
 			}
 		}
-		max = int(i8max)
+		max = int64(i8max)
 	case DataTypeI16:
 		var i16max int16
 		for _, s := range b.I16 {
@@ -427,7 +427,7 @@ func (b *PCMBuffer) calculateIntBitDepth() uint8 {
 				i16max = s
 			}
 		}
-		max = int(i16max)
+		max = int64(i16max)
 	case DataTypeI32:
 		var i32max int32
 		for _, s := range b.I32 {
@@ -435,7 +435,7 @@ func (b *PCMBuffer) calculateIntBitDepth() uint8 {
 				i32max = s
 			}
 		}
-		max = int(i32max)
+		max = int64(i32max)
 	default:
 		// This method is only meant to be used on int buffers.
 		return bitDepth
