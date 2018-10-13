@@ -1,7 +1,10 @@
 package audio
 
-import "testing"
-import "bytes"
+import (
+	"bytes"
+	"math"
+	"testing"
+)
 
 func TestInt24BETo32(t *testing.T) {
 	tests := []struct {
@@ -117,5 +120,73 @@ func TestInt24BETo32ToLEToInt32(t *testing.T) {
 			}
 		})
 	}
+}
 
+func TestUint32toUint24Bytes(t *testing.T) {
+	tests := []struct {
+		name string
+		be   []byte
+		val  uint32
+	}{
+		{name: "mid", be: []byte{0x0, 0x0, 0x1}, val: 1},
+		{name: "max", be: []byte{0xFF, 0xFF, 0xFF}, val: math.MaxUint32},
+		{name: "random", be: []byte{0x5D, 0xCB, 0xED}, val: 6147053},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			beB := Uint32toUint24Bytes(tt.val)
+			if bytes.Compare(beB, tt.be) != 0 {
+				t.Errorf("Uint32toUint24Bytes(%d) = %x, want %x", tt.val, beB, tt.be)
+			}
+		})
+	}
+}
+
+func TestUint24to32(t *testing.T) {
+	tests := []struct {
+		name string
+		be   []byte
+		val  uint32
+	}{
+		{name: "mid", be: []byte{0x0, 0x0, 0x1}, val: 1},
+		{name: "max", be: []byte{0xff, 0xff, 0xff}, val: 16777215},
+		{name: "random", be: []byte{0x5D, 0xCB, 0xED}, val: 6147053},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			val := Uint24to32(tt.be)
+			if val != tt.val {
+				t.Errorf("Uint24to32(%x) = %d, want %d", tt.be, val, tt.val)
+			}
+		})
+	}
+}
+
+func TestIntToIEEEFloat(t *testing.T) {
+	tests := []struct {
+		name string
+		ret  [10]byte
+		val  int
+		val2 int
+	}{
+		{name: "min", ret: [10]byte{0x3f, 0xff, 0x80}, val: 1, val2: 1},
+		{name: "max", ret: [10]byte{0x40, 0x3e, 0x80}, val: math.MaxInt64, val2: 800000000}, // IEEEFloatToInt truncates
+		{name: "random", ret: [10]byte{0x40, 0x15, 0xbb, 0x97, 0xda}, val: 6147053, val2: 6147053},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			val := IntToIEEEFloat(tt.val)
+			if val != tt.ret {
+				t.Errorf("IntToIEEEFloat(%d) = %x, want %x", tt.val, val, tt.ret)
+			}
+		})
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			val := IEEEFloatToInt(tt.ret)
+			if val != tt.val2 {
+				t.Errorf("IEEEFloatToInt(%x) = %d, want %d", tt.ret, val, tt.val2)
+			}
+		})
+	}
 }
