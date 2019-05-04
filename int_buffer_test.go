@@ -1,6 +1,7 @@
 package audio
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -36,6 +37,14 @@ func TestIntBuffer_AsFloat32Buffer(t *testing.T) {
 					t.Errorf("%d was converted out of range to %f", intData[i], f)
 				}
 			}
+
+			if got.Type() != reflect.Float32 {
+				t.Errorf("buffer was improperly typed: %v", got.Type())
+			}
 		})
 	}
+}
+
+func TestBufferType(t *testing.T) {
+
 }

@@ -2,6 +2,7 @@ package audio
 
 import (
 	"errors"
+	"reflect"
 )
 
 var (
@@ -32,4 +33,7 @@ type Buffer interface {
 	// Clone creates a clean clone that can be modified without
 	// changing the source buffer.
 	Clone() Buffer
+	// Type returns a reflect value for determining the type
+	// for on the fly conversions
+	Type() reflect.Kind
 }

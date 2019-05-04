@@ -1,5 +1,7 @@
 package audio
 
+import "reflect"
+
 var _ Buffer = (*FloatBuffer)(nil)
 var _ Buffer = (*Float32Buffer)(nil)
 
@@ -72,6 +74,11 @@ func (buf *FloatBuffer) NumFrames() int {
 	}
 
 	return len(buf.Data) / numChannels
+}
+
+// Type returns the type of this buffer
+func (buf *FloatBuffer) Type() reflect.Kind {
+	return reflect.Float64
 }
 
 // Float32Buffer is an audio buffer with its PCM data formatted as float32.
@@ -153,4 +160,9 @@ func (buf *Float32Buffer) NumFrames() int {
 	}
 
 	return len(buf.Data) / numChannels
+}
+
+// Type returns the type of this buffer
+func (buf *Float32Buffer) Type() reflect.Kind {
+	return reflect.Float32
 }
