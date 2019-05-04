@@ -45,6 +45,15 @@ func TestPCMBuffer_AsFloatBuffer(t *testing.T) {
 			if !reflect.DeepEqual(pcmb.AsI32(), tt.i32) {
 				t.Errorf("Expected %+v got %+v", tt.i32, pcmb.AsI32())
 			}
+			if pcmb.Type() != reflect.Int8 {
+				t.Errorf("buffer was improperly typed: %v", pcmb.Type())
+			}
+			if pcmb32.Type() != reflect.Float32 {
+				t.Errorf("buffer was improperly typed: %v", pcmb32.Type())
+			}
+			if pcmb64.Type() != reflect.Float64 {
+				t.Errorf("buffer was improperly typed: %v", pcmb64.Type())
+			}
 		})
 	}
 
