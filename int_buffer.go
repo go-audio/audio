@@ -1,6 +1,9 @@
 package audio
 
-import "math"
+import (
+	"math"
+	"reflect"
+)
 
 var _ Buffer = (*IntBuffer)(nil)
 
@@ -103,4 +106,9 @@ func (buf *IntBuffer) Clone() Buffer {
 		SampleRate:  buf.Format.SampleRate,
 	}
 	return newB
+}
+
+// Type returns the type of this buffer
+func (buf *IntBuffer) Type() reflect.Kind {
+	return reflect.Int
 }

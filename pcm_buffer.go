@@ -1,6 +1,9 @@
 package audio
 
-import "math"
+import (
+	"math"
+	"reflect"
+)
 
 // PCMDataFormat is an enum type to indicate the underlying data format used.
 type PCMDataFormat uint8
@@ -458,4 +461,27 @@ func (b *PCMBuffer) calculateIntBitDepth() uint8 {
 	}
 
 	return bitDepth
+}
+
+// Type returns the type of this buffer
+func (b *PCMBuffer) Type() reflect.Kind {
+	if b == nil {
+		return reflect.Invalid
+	}
+
+	switch b.DataType {
+	case DataTypeI8:
+		return reflect.Int8
+	case DataTypeI16:
+		return reflect.Int16
+	case DataTypeI32:
+		return reflect.Int32
+	case DataTypeF32:
+		return reflect.Float32
+	case DataTypeF64:
+		return reflect.Float64
+	default:
+		return reflect.Invalid
+	}
+
 }

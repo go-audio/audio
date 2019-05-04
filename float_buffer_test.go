@@ -97,9 +97,15 @@ func TestFloat32Buffer(t *testing.T) {
 			if !reflect.DeepEqual(fb64.Data, tt.f64) {
 				t.Errorf("Expected %+v got %+v", tt.f64, fb64.Data)
 			}
+			if fb64.Type() != reflect.Float64 {
+				t.Errorf("buffer was improperly typed: %v", fb64.Type())
+			}
 			integer := fb.AsIntBuffer()
 			if !reflect.DeepEqual(integer.Data, tt.integer) {
 				t.Errorf("Expected %+v got %+v", tt.integer, integer.Data)
+			}
+			if integer.Type() != reflect.Int {
+				t.Errorf("buffer was improperly typed: %v", integer.Type())
 			}
 		})
 	}
