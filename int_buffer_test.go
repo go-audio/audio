@@ -37,14 +37,20 @@ func TestIntBuffer_AsFloat32Buffer(t *testing.T) {
 					t.Errorf("%d was converted out of range to %f", intData[i], f)
 				}
 			}
-
 			if got.Type() != reflect.Float32 {
 				t.Errorf("buffer was improperly typed: %v", got.Type())
 			}
+
+			gotb := got.Clone()
+			got64 := gotb.AsFloatBuffer()
+			for i, f := range got64.Data {
+				if f < -1.0 || f > 1.0 {
+					t.Errorf("%d was converted out of range to %f", intData[i], f)
+				}
+			}
+			if got64.Type() != reflect.Float64 {
+				t.Errorf("buffer was improperly typed: %v", got64.Type())
+			}
 		})
 	}
-}
-
-func TestBufferType(t *testing.T) {
-
 }
