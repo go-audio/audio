@@ -55,15 +55,15 @@ func (buf *IntBuffer) AsFloat32Buffer() *Float32Buffer {
 			buf.SourceBitDepth = 16
 		}
 		// greater than int16, expecting int24
-		if max > 32767 {
+		if max > 1<<15 {
 			buf.SourceBitDepth = 24
 		}
 		// int 32
-		if max > 8388607 {
+		if max > 1<<23 {
 			buf.SourceBitDepth = 32
 		}
 		// int 64
-		if max > 4294967295 {
+		if max > 1<<31 {
 			buf.SourceBitDepth = 64
 		}
 	}
