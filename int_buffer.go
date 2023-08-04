@@ -37,15 +37,21 @@ func (buf *IntBuffer) AsFloat32Buffer() *Float32Buffer {
 	newB := &Float32Buffer{}
 	newB.Data = make([]float32, len(buf.Data))
 	max := int64(0)
+	min := int64(0)
 	// try to guess the bit depths without knowing the source
 	if buf.SourceBitDepth == 0 {
 		for _, s := range buf.Data {
 			if int64(s) > max {
 				max = int64(s)
+			} else if int64(s) < min {
+				min = int64(s)
 			}
 		}
+		if -min > max {
+			max = -min
+		}
 		buf.SourceBitDepth = 8
-		if max > 127 {
+		if max > 255 || min < 0 {
 			buf.SourceBitDepth = 16
 		}
 		// greater than int16, expecting int24
@@ -62,9 +68,20 @@ func (buf *IntBuffer) AsFloat32Buffer() *Float32Buffer {
 		}
 	}
 	newB.SourceBitDepth = buf.SourceBitDepth
-	factor := math.Pow(2, float64(buf.SourceBitDepth)-1)
+	var toFloat func(int) float32
+	if buf.SourceBitDepth == 8 {
+		// 8-bit uses unsigned ints
+		toFloat = func(d int) float32 {
+			return float32(d)/255*2 - 1
+		}
+	} else {
+		factor := 1.0 / math.Pow(2, float64(buf.SourceBitDepth-1))
+		toFloat = func(d int) float32 {
+			return float32(float64(d) * factor)
+		}
+	}
 	for i := 0; i < len(buf.Data); i++ {
-		newB.Data[i] = float32(float64(buf.Data[i]) / factor)
+		newB.Data[i] = toFloat(buf.Data[i])
 	}
 	newB.Format = &Format{
 		NumChannels: buf.Format.NumChannels,
