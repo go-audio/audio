@@ -32,39 +32,62 @@ func (buf *IntBuffer) AsFloatBuffer() *FloatBuffer {
 	return newB
 }
 
+// GetSourceBitDepth returns buf.SourceBitDepth if populated, otherwise returns an estimate
+// of the source bit depth based on the range of integer values contained in the buffer.
+func (buf *IntBuffer) GetSourceBitDepth() int {
+	if buf == nil {
+		return 0
+	}
+	if buf.SourceBitDepth != 0 {
+		return buf.SourceBitDepth
+	}
+
+	max := int64(0)
+	min := int64(0)
+	for _, s := range buf.Data {
+		if int64(s) > max {
+			max = int64(s)
+		} else if int64(s) < min {
+			min = int64(s)
+		}
+	}
+	if -min > max {
+		max = -min
+	}
+
+	// 8-bit PCM uses unsigned ints (bytes)
+	// Require max > 0 (vals in a silent 8-bit buffer should be ~128)
+	if min >= 0 && max > 0 && max <= 255 {
+		return 8
+	}
+	for _, n := range []int{16, 24, 32} {
+		// max abs val of an n-bit signed int is 2^(n-1)
+		if max <= 1<<(n-1) {
+			return n
+		}
+	}
+	return 64
+}
+
 // AsFloat32Buffer returns a copy of this buffer but with data converted to float 32.
 func (buf *IntBuffer) AsFloat32Buffer() *Float32Buffer {
 	newB := &Float32Buffer{}
 	newB.Data = make([]float32, len(buf.Data))
-	max := int64(0)
-	// try to guess the bit depths without knowing the source
-	if buf.SourceBitDepth == 0 {
-		for _, s := range buf.Data {
-			if int64(s) > max {
-				max = int64(s)
-			}
+	newB.SourceBitDepth = buf.GetSourceBitDepth()
+	var toFloat func(int) float32
+	if newB.SourceBitDepth == 8 {
+		// 8-bit uses unsigned ints
+		toFloat = func(d int) float32 {
+			return float32(d)/255*2 - 1
 		}
-		buf.SourceBitDepth = 8
-		if max > 127 {
-			buf.SourceBitDepth = 16
-		}
-		// greater than int16, expecting int24
-		if max > 32767 {
-			buf.SourceBitDepth = 24
-		}
-		// int 32
-		if max > 8388607 {
-			buf.SourceBitDepth = 32
-		}
-		// int 64
-		if max > 4294967295 {
-			buf.SourceBitDepth = 64
+	} else {
+		factor := 1.0 / math.Pow(2, float64(newB.SourceBitDepth-1))
+		toFloat = func(d int) float32 {
+			return float32(float64(d) * factor)
 		}
 	}
-	newB.SourceBitDepth = buf.SourceBitDepth
-	factor := math.Pow(2, float64(buf.SourceBitDepth)-1)
 	for i := 0; i < len(buf.Data); i++ {
-		newB.Data[i] = float32(float64(buf.Data[i]) / factor)
+		newB.Data[i] = toFloat(buf.Data[i])
 	}
 	newB.Format = &Format{
 		NumChannels: buf.Format.NumChannels,
