@@ -53,7 +53,8 @@ func (buf *IntBuffer) GetSourceBitDepth() int {
 	}
 
 	// 8-bit PCM uses unsigned ints (bytes)
-	if min >= 0 && max <= 255 {
+	// Require max > 0 (vals in a silent 8-bit buffer should be ~128)
+	if min >= 0 && max > 0 && max <= 255 {
 		return 8
 	}
 	for _, n := range []int{16, 24, 32} {
