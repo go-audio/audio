@@ -35,6 +35,9 @@ func (buf *IntBuffer) AsFloatBuffer() *FloatBuffer {
 // GetSourceBitDepth returns buf.SourceBitDepth if populated, otherwise returns an estimate
 // of the source bit depth based on the range of integer values contained in the buffer.
 func (buf *IntBuffer) GetSourceBitDepth() int {
+	if buf == nil {
+		return 0
+	}
 	if buf.SourceBitDepth != 0 {
 		return buf.SourceBitDepth
 	}
